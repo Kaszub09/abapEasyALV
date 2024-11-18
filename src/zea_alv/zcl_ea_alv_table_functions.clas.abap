@@ -13,12 +13,12 @@ CLASS zcl_ea_alv_table_functions DEFINITION PUBLIC CREATE PRIVATE GLOBAL FRIENDS
       on_toolbar FOR EVENT toolbar OF cl_gui_alv_grid IMPORTING e_object e_interactive.
 
     DATA:
-      functions TYPE STANDARD TABLE OF stb_button.
+      functions TYPE STANDARD TABLE OF stb_button WITH EMPTY KEY.
 ENDCLASS.
 
 
 
-CLASS ZCL_EA_ALV_TABLE_FUNCTIONS IMPLEMENTATION.
+CLASS zcl_ea_alv_table_functions IMPLEMENTATION.
 
 
   METHOD add_function.
