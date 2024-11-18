@@ -13,7 +13,7 @@ CLASS zcl_ea_alv_table_columns DEFINITION PUBLIC CREATE PUBLIC.
           WITH NON-UNIQUE SORTED KEY name COMPONENTS fieldname
           WITH NON-UNIQUE SORTED KEY key_col COMPONENTS key
           WITH NON-UNIQUE SORTED KEY col_pos COMPONENTS col_pos,
-      tt_color_col      TYPE string,
+      tt_color_col      TYPE lvc_t_scol,
       tt_cell_style_col TYPE lvc_t_styl,
       t_exception_col   TYPE c LENGTH 1.
 
