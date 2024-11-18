@@ -16,7 +16,7 @@
     </item>
     <item>
      <FUNCNAME>ZEA_SCREEN_DISPLAY</FUNCNAME>
-     <SHORT_TEXT>Display screen using CALL</SHORT_TEXT>
+     <SHORT_TEXT>ZMK_SCREEN_WITH_CONTAINER internal use</SHORT_TEXT>
      <IMPORT>
       <RSIMP>
        <PARAMETER>DYNAMIC_COMMANDS</PARAMETER>

@@ -1,6 +1,5 @@
-FUNCTION-POOL ZEA_SALV.      "MESSAGE-ID ..
+FUNCTION-POOL ZEA_SALV.                     "MESSAGE-ID ..
 
-* INCLUDE LZMK_SALV_DYNAMIC_STATUSD...       " Local class definition
 
 DATA:
   BEGIN OF dynamic,
@@ -14,7 +13,4 @@ DATA:
     dynamic_8  TYPE smp_dyntxt,
     dynamic_9  TYPE smp_dyntxt,
     dynamic_10 TYPE smp_dyntxt,
-    dynamic_11 TYPE smp_dyntxt,
-    dynamic_12 TYPE smp_dyntxt,
-    dynamic_13 TYPE smp_dyntxt,
   END OF dynamic.

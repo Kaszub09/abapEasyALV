@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<abapGit version="v1.0.0" serializer="LCL_OBJECT_CLAS" serializer_version="v1.0.0">
+ <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
+  <asx:values>
+   <VSEOCLASS>
+    <CLSNAME>ZCL_EA_SALV_TABLE_SELECTABLE</CLSNAME>
+    <LANGU>E</LANGU>
+    <DESCRIPT>Allows user to select row from table.</DESCRIPT>
+    <STATE>1</STATE>
+    <CLSCCINCL>X</CLSCCINCL>
+    <FIXPT>X</FIXPT>
+    <UNICODE>X</UNICODE>
+   </VSEOCLASS>
+   <TPOOL>
+    <item>
+     <ID>I</ID>
+     <KEY>001</KEY>
+     <ENTRY>Confirm</ENTRY>
+     <LENGTH>17</LENGTH>
+    </item>
+    <item>
+     <ID>I</ID>
+     <KEY>002</KEY>
+     <ENTRY>Cancel</ENTRY>
+     <LENGTH>16</LENGTH>
+    </item>
+   </TPOOL>
+   <DESCRIPTIONS>
+    <SEOCOMPOTX>
+     <CMPNAME>DISPLAY_SELECTABLE</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Cannot be used with container, since it requires additional</DESCRIPT>
+    </SEOCOMPOTX>
+   </DESCRIPTIONS>
+   <DESCRIPTIONS_SUB>
+    <SEOSUBCOTX>
+     <CMPNAME>DISPLAY_SELECTABLE</CMPNAME>
+     <SCONAME>DOUBLE_CLICK_SELECT</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Double click selects the row and closes screen.</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>DISPLAY_SELECTABLE</CMPNAME>
+     <SCONAME>USER_CONFIRMED</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Whether user cancelled or clicked confirm (also true selecte</DESCRIPT>
+    </SEOSUBCOTX>
+   </DESCRIPTIONS_SUB>
+  </asx:values>
+ </asx:abap>
+</abapGit>

@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<abapGit version="v1.0.0" serializer="LCL_OBJECT_CLAS" serializer_version="v1.0.0">
+ <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
+  <asx:values>
+   <VSEOCLASS>
+    <CLSNAME>ZCL_EA_SALV_TABLE</CLSNAME>
+    <LANGU>E</LANGU>
+    <DESCRIPT>Easy table display with SALV framework</DESCRIPT>
+    <STATE>1</STATE>
+    <CLSCCINCL>X</CLSCCINCL>
+    <FIXPT>X</FIXPT>
+    <UNICODE>X</UNICODE>
+   </VSEOCLASS>
+   <DESCRIPTIONS>
+    <SEOCOMPOTX>
+     <CMPNAME>ALV_INITIALISED</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Called after alv_table initialisation, redefine to e.g. hook</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CMPNAME>COLUMNS</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Data must be set first</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CMPNAME>DISPLAY_DATA</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Set data before displaying with &lt;em&gt;set_data&lt;/em&gt;.</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CMPNAME>FUNCTIONS</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>&lt;strong&gt;Warning!&lt;/strong&gt; &lt;br/&gt;Can be used only with default</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CMPNAME>SET_CONTAINER</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>&lt;strong&gt;Warning!&lt;/strong&gt; &lt;br/&gt;Should probably be called ins</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CMPNAME>SET_DATA</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Set before changing any columns, since they are based on tab</DESCRIPT>
+    </SEOCOMPOTX>
+   </DESCRIPTIONS>
+   <DESCRIPTIONS_SUB>
+    <SEOSUBCOTX>
+     <CMPNAME>SET_DATA</CMPNAME>
+     <SCONAME>CREATE_TABLE_COPY</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Set to true if table data is destroyed before display (e.g.</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>SET_DATA</CMPNAME>
+     <SCONAME>DATA_TABLE</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Should be ref to standard table</DESCRIPT>
+    </SEOSUBCOTX>
+   </DESCRIPTIONS_SUB>
+  </asx:values>
+ </asx:abap>
+</abapGit>

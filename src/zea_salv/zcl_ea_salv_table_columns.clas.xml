@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<abapGit version="v1.0.0" serializer="LCL_OBJECT_CLAS" serializer_version="v1.0.0">
+ <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
+  <asx:values>
+   <VSEOCLASS>
+    <CLSNAME>ZCL_EA_SALV_TABLE_COLUMNS</CLSNAME>
+    <LANGU>E</LANGU>
+    <DESCRIPT>Columns information for &lt;em&gt;zcl_ea_salv_table&lt;/em&gt;</DESCRIPT>
+    <STATE>1</STATE>
+    <CLSCCINCL>X</CLSCCINCL>
+    <FIXPT>X</FIXPT>
+    <UNICODE>X</UNICODE>
+   </VSEOCLASS>
+   <DESCRIPTIONS>
+    <SEOCOMPOTX>
+     <CMPNAME>MOVE_COLUMN</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Rearranges columns and recalculates col_pos</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CMPNAME>SET_AS_CELL_TYPE</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Get types from &lt;em&gt;if_salv_c_celltype&lt;/em&gt;.</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CMPNAME>SET_AS_EXCEPTION</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Check documentation for &lt;em&gt;cl_salv_columns_list=&gt;set_except</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CMPNAME>SET_OPTIMIZE</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Warning! Can slow down display if there is too many rows/col</DESCRIPT>
+    </SEOCOMPOTX>
+   </DESCRIPTIONS>
+  </asx:values>
+ </asx:abap>
+</abapGit>
