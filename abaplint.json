@@ -1,7 +1,7 @@
 {
   "global": {
     "files": "/src/**/*.*", 
-    "exclude": ["*/ZEA_ALV_EXAMPLES/*", "*/ZEA_SALV_EXAMPLES/*"],
+    "exclude": [{"/src*/ZEA_ALV_EXAMPLES/*", "/src*/ZEA_SALV_EXAMPLES/*"}],
     "noIssues": [],
     "skipGeneratedBOPFInterfaces": false,
     "skipGeneratedFunctionGroups": false,
