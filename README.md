@@ -1,7 +1,7 @@
 # abapEasyALV
 Wrapper classes for easy reporting. Check examples for usage.
 
-## Example usage - simple report.
+## Example usage - simple report. 
 ```abap
 REPORT zea_alv_ex_simple_report.
 
