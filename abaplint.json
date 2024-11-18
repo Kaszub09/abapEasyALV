@@ -127,7 +127,7 @@
       "checkData": true
     },
     "fully_type_itabs": {
-      "exclude": ["/src/*zcl_ea_alv_table_columns*", "/src/*zcl_ea_salv_table_columns*"],
+      "exclude": [ ],
       "severity": "Error"
     },
     "function_module_recommendations": {
