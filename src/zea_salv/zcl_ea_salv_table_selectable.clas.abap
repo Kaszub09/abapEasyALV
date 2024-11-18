@@ -37,7 +37,7 @@ ENDCLASS.
 CLASS zcl_ea_salv_table_selectable IMPLEMENTATION.
   METHOD constructor.
     super->constructor( layout_key = layout_key report_id = report_id ).
-    "Must  be explicitly called since base constructor calls base implementation.
+    "Must be explicitly called since base constructor calls base implementation.
     alv_initialised( ).
   ENDMETHOD.
 

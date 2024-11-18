@@ -31,8 +31,8 @@ CLASS zcl_ea_alv_table DEFINITION PUBLIC CREATE PUBLIC.
       get_layout_from_f4_selection RETURNING VALUE(layout) TYPE slis_vari,
       set_progress_bar IMPORTING text TYPE csequence DEFAULT '' current_record TYPE i DEFAULT 0 records_count TYPE i DEFAULT 0,
       "! @parameter header | <p class="shorttext synchronized" lang="en">Max 70 characters</p>
-      "! @parameter header_size | <p class="shorttext synchronized" lang="en">'X' - large; 'M' - medium; ' ' - small;</p>
-      set_header IMPORTING header TYPE csequence header_size TYPE lvc_titsz DEFAULT space,
+      "! @parameter header_size | <p class="shorttext synchronized" lang="en">' ' - large; 'M' - medium; 'X' - small;</p>
+      set_header IMPORTING header TYPE csequence header_size TYPE lvc_titsz DEFAULT 'M',
       "! <p class="shorttext synchronized" lang="en">Must be called after displaying data in fullscreen.
       "! <br/>Frees control from <em>cl_gui_alv_grid</em> so that container can be reused,
       "!  as well as removes default container if was used to display data in in fullscreen.</p>
