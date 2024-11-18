@@ -21,12 +21,13 @@ START-OF-SELECTION.
   alv->set_data( REF #( sflight_tab ) ).
   alv->layout-name = p_layout.
   alv->display_data( ).
-  "We must close after displaying so that default container is destroyed and can be created for another instance,
+  "Usually this much is enough, but we will display another table just to illustrate
+  "that you must free containers before attempting it - otherwise, two containers and old data is visible.
+
+  "We must close after displaying so that default container is destroyed and can be recreated for another instance,
   "since screen is shared
   alv->close( ).
-
-
-  SELECT * FROM tadir WHERE obj_name IN @s_objnam INTO TABLE @DATA(tadir_tab) UP TO 1000 ROWS .
+  SELECT * FROM tadir WHERE obj_name IN @s_objnam INTO TABLE @DATA(tadir_tab) UP TO 100 ROWS .
   DATA(alv2) = NEW zcl_ea_alv_table(  ).
   alv2->set_data( REF #( tadir_tab ) ).
   alv2->display_data( ).

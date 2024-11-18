@@ -13,7 +13,9 @@ CLASS zcl_ea_screen DEFINITION PUBLIC FINAL CREATE PUBLIC.
     CONSTANTS:
       c_program_name           TYPE syrepid VALUE 'SAPLZEA_ALV_SCREEN',
       c_screen_with_toolbar    TYPE sydynnr VALUE '0001',
-      c_screen_without_toolbar TYPE sydynnr VALUE '0002'.
+      c_screen_without_toolbar TYPE sydynnr VALUE '0002',
+      c_main_status            TYPE string VALUE 'DYNAMIC_COMMANDS',
+      c_main_title             TYPE string VALUE 'HEADER'.
 
     CLASS-METHODS:
       "! <p class="shorttext synchronized" lang="en">Set to catch PBO/PAI events of screen</p>
@@ -24,7 +26,7 @@ CLASS zcl_ea_screen DEFINITION PUBLIC FINAL CREATE PUBLIC.
       "! <br/>You can use statues and headers of program inside PBO event.
       "! @parameter commands | <p class="shorttext synchronized" lang="en">If supplied, calls screen <em>c_screen_with_toolbar</em>. Otherwise <em>c_screen_without_toolbar</em></p>
       display_screen IMPORTING commands TYPE tt_command OPTIONAL start_column TYPE i DEFAULT 0 end_column TYPE i DEFAULT 128
-                               start_line TYPE i DEFAULT 0 end_line TYPE i DEFAULT 24.
+                               start_line TYPE i DEFAULT 0 end_line TYPE i DEFAULT 24 PREFERRED PARAMETER commands.
 ENDCLASS.
 
 CLASS zcl_ea_screen IMPLEMENTATION.

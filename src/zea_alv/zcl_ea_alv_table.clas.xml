@@ -20,7 +20,7 @@
     <SEOCOMPOTX>
      <CMPNAME>CLOSE</CMPNAME>
      <LANGU>E</LANGU>
-     <DESCRIPT>Must be called after displaying data in default container.</DESCRIPT>
+     <DESCRIPT>Must be called after displaying data in fullscreen. &lt;br/&gt;Fre</DESCRIPT>
     </SEOCOMPOTX>
     <SEOCOMPOTX>
      <CMPNAME>COLUMNS</CMPNAME>

@@ -33,7 +33,9 @@ CLASS zcl_ea_alv_table DEFINITION PUBLIC CREATE PUBLIC.
       "! @parameter header | <p class="shorttext synchronized" lang="en">Max 70 characters</p>
       "! @parameter header_size | <p class="shorttext synchronized" lang="en">'X' - large; 'M' - medium; ' ' - small;</p>
       set_header IMPORTING header TYPE csequence header_size TYPE lvc_titsz DEFAULT space,
-      "! <p class="shorttext synchronized" lang="en">Must be called after displaying data in default container.</p>
+      "! <p class="shorttext synchronized" lang="en">Must be called after displaying data in fullscreen.
+      "! <br/>Frees control from <em>cl_gui_alv_grid</em> so that container can be reused,
+      "!  as well as removes default container if was used to display data in in fullscreen.</p>
       close,
       refresh.
 
@@ -94,7 +96,7 @@ ENDCLASS.
 
 
 
-CLASS ZCL_EA_ALV_TABLE IMPLEMENTATION.
+CLASS zcl_ea_alv_table IMPLEMENTATION.
 
 
   METHOD alv_initialised.
@@ -155,17 +157,25 @@ CLASS ZCL_EA_ALV_TABLE IMPLEMENTATION.
 
 
   METHOD initialise_alv.
+    destroy_default_container( ).
+
     IF container IS BOUND.
       is_in_default_container = abap_false.
       alv_grid = NEW cl_gui_alv_grid( i_parent = container ).
-      destroy_default_container( ).
     ELSE.
       is_in_default_container = abap_true.
-      recreate_default_container( ).
+      IF cl_gui_alv_grid=>offline( ) = 0.
+        "^Non-initial container raises error in background
+        recreate_default_container( ).
+      ENDIF.
       alv_grid = NEW cl_gui_alv_grid( i_parent = default_container ).
     ENDIF.
 
-    alv_grid->register_edit_event( cl_gui_alv_grid=>mc_evt_modified ).
+    IF cl_gui_alv_grid=>offline( ) = 0.
+      "^Those events raise errors in background
+      alv_grid->register_edit_event( cl_gui_alv_grid=>mc_evt_enter ).
+      alv_grid->register_edit_event( cl_gui_alv_grid=>mc_evt_modified ).
+    ENDIF.
 
     set_handlers( ).
     functions->alv_grid_changed( alv_grid ).
@@ -244,7 +254,7 @@ CLASS ZCL_EA_ALV_TABLE IMPLEMENTATION.
 
 
   METHOD set_handlers.
-    SET HANDLER on_added_function on_double_click on_hotspot_click on_button_click on_drag on_drop on_drop_complete FOR alv_grid.
+    SET HANDLER on_added_function on_double_click on_hotspot_click on_button_click on_data_changed on_drag on_drop on_drop_complete FOR alv_grid.
   ENDMETHOD.
 
 
