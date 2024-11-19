@@ -8,11 +8,10 @@ While SALV framework is newer and more easier to use (especially since it doesn'
 ```abap
 REPORT zea_alv_ex_simple_report.
 
-TABLES: sflight, tadir.
+TABLES: sflight.
 
 SELECT-OPTIONS:
-s_carrid FOR sflight-carrid,
-s_objnam FOR tadir-obj_name DEFAULT 'Z*' OPTION CP SIGN I .
+s_carrid FOR sflight-carrid.
 PARAMETERS:
 p_layout TYPE disvariant-variant.
 
