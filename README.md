@@ -1,6 +1,9 @@
 # abapEasyALV
 Wrapper classes for ALV/SALV frameworks for easy reporting. Check examples for usage.
 
+### Installation
+Via https://github.com/abapGit/abapGit. 
+
 ### Why
 There are numerous method in both frameworks which are rarely used, while some common actions (like setting text for column in SALV framework) require many calling number of methods. So the purpose of wrappers is to collect and expose commonly used functionalities.
 
