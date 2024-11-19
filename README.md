@@ -1,8 +1,12 @@
 # abapEasyALV
 Wrapper classes for ALV/SALV frameworks for easy reporting. Check examples for usage.
 
+### Why
+There are numerous method in both frameworks which are rarely used, while some common actions (like setting text for column in SALV framework) require many calling number of methods. So the purpose of wrappers is to expose commonly used functionalities.
+
 ### Why both
 While SALV framework is newer and more easier to use (especially since it doesn't require container), it lacks some features like being able to edit cells or drag&drop functionality. So SALV is preferred unless you need them.
+
 
 ### Example usage - simple report with ALV. 
 ```abap
