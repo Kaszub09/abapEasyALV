@@ -5,7 +5,7 @@ Wrapper classes for ALV/SALV frameworks for easy reporting. Check examples for u
 Via https://github.com/abapGit/abapGit. 
 
 ### Why
-There are numerous methods in both frameworks which are rarely used, while some common actions (like setting text for column in SALV framework) require many calling number of methods. So the purpose of wrappers is to collect and expose commonly used functionalities.
+There are numerous methods in both frameworks which are rarely used, while some common actions (like setting text for column in SALV framework) require calling several methods. So the purpose of wrappers is to collect and expose commonly used functionalities.
 
 ### Why both
 While SALV framework is newer and more easier to use (especially since it doesn't require container), it lacks some features like being able to edit cells or drag&drop functionality. So SALV is preferred unless you need them.
