@@ -22,7 +22,7 @@ CLASS zcl_ea_salv_table_columns DEFINITION PUBLIC CREATE PRIVATE GLOBAL FRIENDS 
       set_as_key IMPORTING column TYPE lvc_fname is_key TYPE abap_bool DEFAULT abap_true,
       set_edit_mask IMPORTING column TYPE lvc_fname mask TYPE lvc_edtmsk OPTIONAL,
       set_output_length IMPORTING column TYPE lvc_fname output_length TYPE lvc_outlen,
-      "! <p class="shorttext synchronized" lang="en">Rearranges columns</p>
+      "! <p class="shorttext synchronized" lang="en">Rearranges columns and recalculates col_pos</p>
       move_column IMPORTING column_to_move TYPE lvc_fname before TYPE lvc_fname,
       "! <p class="shorttext synchronized" lang="en">Warning! Can slow down display if there is too many rows/columns (like tens of thousands)</p>
       set_optimize IMPORTING is_optimized TYPE abap_bool DEFAULT abap_true.

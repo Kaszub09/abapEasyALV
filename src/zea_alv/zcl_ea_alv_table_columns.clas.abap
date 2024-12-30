@@ -44,7 +44,8 @@ CLASS zcl_ea_alv_table_columns DEFINITION PUBLIC CREATE PUBLIC.
       "! <p class="shorttext synchronized" lang="en">Rearranges columns and recalculates col_pos</p>
       move_column IMPORTING column_to_move TYPE lvc_fname before TYPE lvc_fname,
       "! <p class="shorttext synchronized" lang="en">Warning! Can slow down display if there is too many rows/columns (like tens of thousands)</p>
-      set_optimize IMPORTING is_optimized TYPE abap_bool DEFAULT abap_true.
+      set_optimize IMPORTING is_optimized TYPE abap_bool DEFAULT abap_true,
+      set_all_as_editable IMPORTING is_editable TYPE abap_bool DEFAULT abap_true.
 
     DATA:
       fc        TYPE tt_field_cat.
@@ -55,7 +56,7 @@ ENDCLASS.
 
 
 
-CLASS ZCL_EA_ALV_TABLE_COLUMNS IMPLEMENTATION.
+CLASS zcl_ea_alv_table_columns IMPLEMENTATION.
 
 
   METHOD build_fc_from_table.
@@ -179,4 +180,11 @@ CLASS ZCL_EA_ALV_TABLE_COLUMNS IMPLEMENTATION.
   METHOD set_output_length.
     fc[ KEY name fieldname = column ]-outputlen = output_length.
   ENDMETHOD.
+
+  METHOD set_all_as_editable.
+    LOOP AT fc REFERENCE INTO DATA(field).
+      field->edit = is_editable.
+    ENDLOOP.
+  ENDMETHOD.
+
 ENDCLASS.

@@ -137,6 +137,10 @@ CLASS zcl_ea_alv_table IMPLEMENTATION.
     DATA(fc) = CONV lvc_t_fcat( columns->fc ).
     drag_drop->get_handle( IMPORTING handle = grid_layout-s_dragdrop-grid_ddid ).
 
+    IF in_edit_mode = abap_true.
+      alv_grid->set_ready_for_input( 1 ).
+    ENDIF.
+
     alv_grid->set_table_for_first_display( EXPORTING is_variant = VALUE #( BASE grid_variant variant = layout-name )
         i_save = layout-can_save i_default = layout-can_save_initial is_layout = grid_layout
                                            CHANGING it_outtab = <table> it_fieldcatalog = fc ).
