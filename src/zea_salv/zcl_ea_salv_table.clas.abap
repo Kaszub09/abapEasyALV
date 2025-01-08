@@ -8,7 +8,8 @@ CLASS zcl_ea_salv_table DEFINITION PUBLIC CREATE PUBLIC.
     METHODS:
       "! @parameter layout_key |  <p class="shorttext synchronized" lang="en">Created from <em>report_id</em> if skipped.</p>
       "! @parameter report_id | <p class="shorttext synchronized" lang="en">Used to if <em>layout_key</em> wasn't filled.</p>
-      constructor IMPORTING layout_key TYPE salv_s_layout_key OPTIONAL report_id TYPE sy-repid DEFAULT sy-cprog PREFERRED PARAMETER report_id,
+      constructor IMPORTING layout_key TYPE salv_s_layout_key OPTIONAL report_id TYPE sy-repid DEFAULT sy-cprog
+                            container TYPE REF TO cl_gui_container OPTIONAL PREFERRED PARAMETER report_id,
       "! <p class="shorttext synchronized" lang="en"><strong>Warning!</strong>
       "! <br/>Should probably be called inside PBO - unless it's a container that can be created somewhere else,
       "! e.g. cl_gui_docking_container with report name and dynpro.
@@ -63,7 +64,7 @@ ENDCLASS.
 CLASS zcl_ea_salv_table IMPLEMENTATION.
   METHOD constructor.
     me->layout_key = COND #( WHEN NOT layout_key IS INITIAL THEN layout_key ELSE VALUE salv_s_layout_key( report = report_id ) ).
-    initialise_alv( ).
+    initialise_alv( container ).
   ENDMETHOD.
 
   METHOD display_data.
