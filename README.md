@@ -50,7 +50,7 @@ INITIALIZATION.
   DATA(salv) = NEW zcl_ea_salv_table( ). "Initialize there so you get f4 for layout.
 
 START-OF-SELECTION.
-  SELECT * FROM sflight WHERE carrid IN @s_carrid INTO TABLE @DATA(sflight_tab)
+  SELECT * FROM sflight WHERE carrid IN @s_carrid INTO TABLE @DATA(sflight_tab).
   salv->set_data( REF #( sflight_tab ) ).
   salv->display_data( p_layout ).
 
