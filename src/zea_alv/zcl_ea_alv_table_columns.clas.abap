@@ -45,7 +45,10 @@ CLASS zcl_ea_alv_table_columns DEFINITION PUBLIC CREATE PUBLIC.
       move_column IMPORTING column_to_move TYPE lvc_fname before TYPE lvc_fname,
       "! <p class="shorttext synchronized" lang="en">Warning! Can slow down display if there is too many rows/columns (like tens of thousands)</p>
       set_optimize IMPORTING is_optimized TYPE abap_bool DEFAULT abap_true,
-      set_all_as_editable IMPORTING is_editable TYPE abap_bool DEFAULT abap_true.
+      set_all_as_editable IMPORTING is_editable TYPE abap_bool DEFAULT abap_true,
+      "! @parameter column | <p class="shorttext synchronized" lang="en">Currency column</p>
+      "! @parameter for_column | <p class="shorttext synchronized" lang="en">Amount column</p>
+      set_as_currency IMPORTING column TYPE lvc_fname for_column TYPE lvc_fname.
 
     DATA:
       fc        TYPE tt_field_cat.
@@ -77,7 +80,7 @@ CLASS zcl_ea_alv_table_columns IMPLEMENTATION.
         fc_field-coltext = field->fieldtext.
       ENDIF.
 
-      fc_field-tabname = 1.
+      fc_field-tabname = 'TABLE1'.
       APPEND fc_field TO field_catalogue.
 
       index = index + 1.
@@ -185,6 +188,10 @@ CLASS zcl_ea_alv_table_columns IMPLEMENTATION.
     LOOP AT fc REFERENCE INTO DATA(field).
       field->edit = is_editable.
     ENDLOOP.
+  ENDMETHOD.
+
+  METHOD set_as_currency.
+    fc[ KEY name fieldname = for_column ]-cfieldname = column.
   ENDMETHOD.
 
 ENDCLASS.
