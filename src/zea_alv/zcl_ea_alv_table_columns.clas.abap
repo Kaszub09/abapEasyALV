@@ -172,6 +172,7 @@ CLASS zcl_ea_alv_table_columns IMPLEMENTATION.
     CLEAR: col->scrtext_l, col->scrtext_m, col->scrtext_s.
     col->scrtext_l = CONV #( text ).
     col->reptext = CONV #( text ).
+    col->coltext = CONV #( text ).
   ENDMETHOD.
 
 
