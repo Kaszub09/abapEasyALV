@@ -1,7 +1,7 @@
 {
   "global": {
     "files": "/src/**/*.*", 
-    "exclude": ["/src*/ZEA_ALV_EXAMPLES/*", "/src*/ZEA_SALV_EXAMPLES/*"],
+    "exclude": [],
     "noIssues": [],
     "skipGeneratedBOPFInterfaces": false,
     "skipGeneratedFunctionGroups": false,
@@ -27,7 +27,7 @@
   },
   "rules": {
     "7bit_ascii": {
-      "exclude": [],
+      "exclude": ["/src*/ZEA_ALV_EXAMPLES/*", "/src*/ZEA_SALV_EXAMPLES/*"],
       "severity": "Error"
     },
     "allowed_object_naming": {
