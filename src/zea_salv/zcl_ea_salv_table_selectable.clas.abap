@@ -1,3 +1,5 @@
+"! <p class="shorttext synchronized" lang="en">Allows user to select row from table.</p>
+"! <br/>TAGS: ALV; SALV; table; display; popup; selectable;
 CLASS zcl_ea_salv_table_selectable DEFINITION PUBLIC CREATE PUBLIC INHERITING FROM zcl_ea_salv_table.
 
   PUBLIC SECTION.

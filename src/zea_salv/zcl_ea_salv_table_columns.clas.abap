@@ -1,4 +1,4 @@
-"! <p class="shorttext synchronized" lang="en">Columns information for <em>zcl_ea_salv_table</em></p>
+"! <p class="shorttext synchronized">Columns information for <em>zcl_ea_salv_table</em></p>
 CLASS zcl_ea_salv_table_columns DEFINITION PUBLIC CREATE PRIVATE GLOBAL FRIENDS zcl_ea_salv_table.
 
   PUBLIC SECTION.
@@ -9,7 +9,9 @@ CLASS zcl_ea_salv_table_columns DEFINITION PUBLIC CREATE PRIVATE GLOBAL FRIENDS 
 
     METHODS:
       constructor IMPORTING alv_table TYPE REF TO cl_salv_table,
+      get IMPORTING column TYPE lvc_fname RETURNING VALUE(column_obj) TYPE REF TO cl_salv_column_table,
       set_fixed_text IMPORTING column TYPE lvc_fname text TYPE csequence,
+      set_decimals IMPORTING column TYPE lvc_fname value TYPE lvc_decmls,
       set_ddic_field IMPORTING column TYPE lvc_fname table TYPE lvc_tname field TYPE lvc_fname,
       set_as_hidden IMPORTING column TYPE lvc_fname is_hidden TYPE abap_bool DEFAULT abap_true,
       set_as_color IMPORTING column TYPE lvc_fname,
@@ -25,7 +27,8 @@ CLASS zcl_ea_salv_table_columns DEFINITION PUBLIC CREATE PRIVATE GLOBAL FRIENDS 
       "! <p class="shorttext synchronized" lang="en">Rearranges columns and recalculates col_pos</p>
       move_column IMPORTING column_to_move TYPE lvc_fname before TYPE lvc_fname,
       "! <p class="shorttext synchronized" lang="en">Warning! Can slow down display if there is too many rows/columns (like tens of thousands)</p>
-      set_optimize IMPORTING is_optimized TYPE abap_bool DEFAULT abap_true.
+      set_optimize IMPORTING is_optimized TYPE abap_bool DEFAULT abap_true,
+      set_color IMPORTING column TYPE lvc_fname color TYPE lvc_s_colo.
 
   PROTECTED SECTION.
     DATA:
@@ -33,9 +36,12 @@ CLASS zcl_ea_salv_table_columns DEFINITION PUBLIC CREATE PRIVATE GLOBAL FRIENDS 
 ENDCLASS.
 
 CLASS zcl_ea_salv_table_columns IMPLEMENTATION.
-
   METHOD constructor.
     me->alv_table = alv_table.
+  ENDMETHOD.
+
+  METHOD get.
+    column_obj = CAST #( alv_table->get_columns( )->get_column( column ) ).
   ENDMETHOD.
 
   METHOD move_column.
@@ -50,7 +56,6 @@ CLASS zcl_ea_salv_table_columns IMPLEMENTATION.
     ENDIF.
     alv_table->get_columns( )->set_column_position( columnname = column_to_move position = new_position ).
   ENDMETHOD.
-
 
   METHOD set_as_cell_type.
     alv_table->get_columns( )->set_cell_type_column( column ).
@@ -69,18 +74,15 @@ CLASS zcl_ea_salv_table_columns IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD set_as_hotspot.
-    DATA(col) = me->alv_table->get_columns( )->get_column( column  ).
-    CALL METHOD col->('SET_CELL_TYPE') EXPORTING value = if_salv_c_cell_type=>hotspot.
+    get( column )->set_cell_type( value = COND #( WHEN is_hotspot = abap_true THEN if_salv_c_cell_type=>hotspot ELSE if_salv_c_cell_type=>text ) ).
   ENDMETHOD.
 
   METHOD set_as_icon.
-    DATA(col) = CAST cl_salv_column_table( me->alv_table->get_columns( )->get_column( column ) ).
-    col->set_icon( if_salv_c_bool_sap=>true ).
+    get( column )->set_icon( is_icon ).
   ENDMETHOD.
 
   METHOD set_as_key.
-    DATA(col) = CAST cl_salv_column_table( me->alv_table->get_columns( )->get_column( column ) ).
-    col->set_key( is_key ).
+    get( column )->set_key( is_key ).
   ENDMETHOD.
 
   METHOD set_ddic_field.
@@ -99,6 +101,10 @@ CLASS zcl_ea_salv_table_columns IMPLEMENTATION.
     col->set_short_text( space ).
   ENDMETHOD.
 
+  METHOD set_decimals.
+    alv_table->get_columns( )->get_column( column )->set_decimals( value = value ).
+  ENDMETHOD.
+
   METHOD set_optimize.
     alv_table->get_columns( )->set_optimize( is_optimized ).
   ENDMETHOD.
@@ -107,4 +113,7 @@ CLASS zcl_ea_salv_table_columns IMPLEMENTATION.
     alv_table->get_columns( )->get_column( column )->set_output_length( output_length ).
   ENDMETHOD.
 
+  METHOD set_color.
+    get( column )->set_color( color ).
+  ENDMETHOD.
 ENDCLASS.

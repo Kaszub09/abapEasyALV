@@ -4,7 +4,7 @@
 "! <li>For character column, '[at symbol]01\QTooltip[at symbol]Text' will display icon and text next to it, as well as set tooltip for a cell. Check ICON_CREATE function module.</li>
 "! <li>If you make single cells editable via styles, remember to call method <em>set_ready_for_input</em> of <em>cl_gui_alv_grid</em></li>
 "! </ul>
-"! <br/>TAGS: field_catalogue; cl_gui_alv_grid
+"! <br/>TAGS: field catalogue; cl_gui_alv_grid
 CLASS zcl_ea_alv_table_columns DEFINITION PUBLIC CREATE PUBLIC.
 
   PUBLIC SECTION.
@@ -18,7 +18,7 @@ CLASS zcl_ea_alv_table_columns DEFINITION PUBLIC CREATE PUBLIC.
       t_exception_col   TYPE c LENGTH 1.
 
     CLASS-METHODS:
-      "! <p class="shorttext synchronized" lang="en">Uses <em>cl_salv_data_descr=>read_structdescr</em></p>
+      "! <p class="shorttext synchronized" lang="en">Uses <em>cl_salv_data_descr=&gt;read_structdescr</em></p>
       build_fc_from_table IMPORTING data_table TYPE REF TO data RETURNING VALUE(field_catalogue) TYPE tt_field_cat.
 
     METHODS:
