@@ -30,7 +30,7 @@ CLASS zcl_ea_alv_table DEFINITION PUBLIC CREATE PUBLIC.
       display_data IMPORTING in_edit_mode            TYPE abap_bool DEFAULT abap_false
                    RETURNING VALUE(was_save_clicked) TYPE abap_bool,
       get_layout_from_f4_selection RETURNING VALUE(layout) TYPE slis_vari,
-      set_progress_bar IMPORTING text TYPE csequence DEFAULT '' current_record TYPE i DEFAULT 0 records_count TYPE i DEFAULT 0,
+      set_progress_bar IMPORTING text TYPE csequence DEFAULT '' current_record TYPE i DEFAULT 0 records_count TYPE i DEFAULT 0 only_full_percent TYPE abap_bool DEFAULT abap_true,
       "! @parameter header | <p class="shorttext synchronized" lang="en">Max 70 characters</p>
       "! @parameter header_size | <p class="shorttext synchronized" lang="en">' ' - large; 'M' - medium; 'X' - small;</p>
       set_header IMPORTING header TYPE csequence header_size TYPE lvc_titsz DEFAULT 'M',
@@ -274,12 +274,18 @@ CLASS zcl_ea_alv_table IMPLEMENTATION.
       last_progress_bar_text = text.
     ENDIF.
 
-    IF records_count > 0.
-      cl_progress_indicator=>progress_indicate( i_text = last_progress_bar_text i_processed = current_record
-        i_total = records_count i_output_immediately = abap_true ).
-    ELSE.
-      cl_progress_indicator=>progress_indicate( i_text = last_progress_bar_text i_output_immediately = abap_true ).
+    IF records_count = 0.
+      cl_progress_indicator=>progress_indicate( i_text = last_progress_bar_text i_output_immediately = 'X' ).
+      RETURN.
     ENDIF.
+
+    IF only_full_percent = abap_true AND records_count > 200. ">200 to avoid having '... MOD 1'.
+      DATA(percent_count) = records_count / 100.
+      IF current_record MOD percent_count <> 1.
+        RETURN.
+      ENDIF.
+    ENDIF.
+    cl_progress_indicator=>progress_indicate( i_text = last_progress_bar_text i_processed = current_record i_total = records_count i_output_immediately = 'X' ).
   ENDMETHOD.
 
 

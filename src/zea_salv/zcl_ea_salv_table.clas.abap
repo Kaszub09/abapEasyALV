@@ -1,7 +1,7 @@
 "! <p class="shorttext synchronized">Easy table display with SALV framework</p>
 "! Wrapper for <em>cl_salv_table</em> which is (hopefully) much more pleasant.
 "! If edition or drag&drop events are needed, use <em>zcl_ea_alv_table</em>.
-"! <br/>TAGS: ALV; SALV; table; display;
+"! <br/>TAGS: ALV; SALV; table; display; popup; progress bar;
 CLASS zcl_ea_salv_table DEFINITION PUBLIC CREATE PUBLIC.
 
   PUBLIC SECTION.
@@ -23,7 +23,7 @@ CLASS zcl_ea_salv_table DEFINITION PUBLIC CREATE PUBLIC.
       "! <p class="shorttext synchronized" lang="en">Set data before displaying with <em>set_data</em>.</p>
       display_data IMPORTING layout_name TYPE slis_vari OPTIONAL,
       get_layout_from_f4_selection RETURNING VALUE(layout) TYPE slis_vari,
-      set_progress_bar IMPORTING text TYPE csequence DEFAULT '' current_record TYPE i DEFAULT 0 records_count TYPE i DEFAULT 0,
+      set_progress_bar IMPORTING text TYPE csequence DEFAULT '' current_record TYPE i DEFAULT 0 records_count TYPE i DEFAULT 0 only_full_percent TYPE abap_bool DEFAULT abap_true,
       "! @parameter header | <p class="shorttext synchronized" lang="en">Max 70 characters</p>
       set_header IMPORTING header TYPE csequence header_size TYPE salv_de_header_size DEFAULT cl_salv_display_settings=>c_header_size_large,
       "! Display screen as popup. Can't be used when displaying in container.
@@ -148,11 +148,18 @@ CLASS zcl_ea_salv_table IMPLEMENTATION.
       last_progress_bar_text = text.
     ENDIF.
 
-    IF records_count > 0.
-      cl_progress_indicator=>progress_indicate( i_text = last_progress_bar_text i_processed = current_record i_total = records_count i_output_immediately = 'X' ).
-    ELSE.
+    IF records_count = 0.
       cl_progress_indicator=>progress_indicate( i_text = last_progress_bar_text i_output_immediately = 'X' ).
+      RETURN.
     ENDIF.
+
+    IF only_full_percent = abap_true AND records_count > 200. ">200 to avoid having '... MOD 1'.
+      DATA(percent_count) = records_count / 100.
+      IF current_record MOD percent_count <> 1.
+        RETURN.
+      ENDIF.
+    ENDIF.
+    cl_progress_indicator=>progress_indicate( i_text = last_progress_bar_text i_processed = current_record i_total = records_count i_output_immediately = 'X' ).
   ENDMETHOD.
 
   METHOD set_header.
