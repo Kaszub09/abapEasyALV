@@ -13,6 +13,7 @@ CLASS zcl_ea_alv_table_columns DEFINITION PUBLIC CREATE PUBLIC.
           WITH NON-UNIQUE SORTED KEY name COMPONENTS fieldname
           WITH NON-UNIQUE SORTED KEY key_col COMPONENTS key
           WITH NON-UNIQUE SORTED KEY col_pos COMPONENTS col_pos,
+      "! 1-blue; 3-yellow; 5-green; 6-red; 7-orange
       tt_color_col      TYPE lvc_t_scol,
       tt_cell_style_col TYPE lvc_t_styl,
       t_exception_col   TYPE c LENGTH 1.
@@ -48,7 +49,9 @@ CLASS zcl_ea_alv_table_columns DEFINITION PUBLIC CREATE PUBLIC.
       set_all_as_editable IMPORTING is_editable TYPE abap_bool DEFAULT abap_true,
       "! @parameter column | <p class="shorttext synchronized" lang="en">Currency column</p>
       "! @parameter for_column | <p class="shorttext synchronized" lang="en">Amount column</p>
-      set_as_currency IMPORTING column TYPE lvc_fname for_column TYPE lvc_fname.
+      set_as_currency IMPORTING column TYPE lvc_fname for_column TYPE lvc_fname,
+      "! @parameter color | <p class="shorttext synchronized" lang="en">"! 1-blue; 3-yellow; 5-green; 6-red; 7-orange</p>
+      set_color IMPORTING column TYPE lvc_fname color TYPE lvc_s_colo.
 
     DATA:
       fc        TYPE tt_field_cat.
@@ -193,6 +196,10 @@ CLASS zcl_ea_alv_table_columns IMPLEMENTATION.
 
   METHOD set_as_currency.
     fc[ KEY name fieldname = for_column ]-cfieldname = column.
+  ENDMETHOD.
+
+  METHOD set_color.
+    fc[ KEY name fieldname = column ]-emphasize = |C{ color-col }{ color-int }{ color-inv }|.
   ENDMETHOD.
 
 ENDCLASS.

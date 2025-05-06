@@ -3,6 +3,7 @@ CLASS zcl_ea_salv_table_columns DEFINITION PUBLIC CREATE PRIVATE GLOBAL FRIENDS 
 
   PUBLIC SECTION.
     TYPES:
+      "! 1-blue; 3-yellow; 5-green; 6-red; 7-orange
       tt_color_col     TYPE lvc_t_scol,
       tt_cell_type_col TYPE salv_t_int4_column,
       t_exception_col  TYPE c LENGTH 1.
@@ -28,6 +29,7 @@ CLASS zcl_ea_salv_table_columns DEFINITION PUBLIC CREATE PRIVATE GLOBAL FRIENDS 
       move_column IMPORTING column_to_move TYPE lvc_fname before TYPE lvc_fname,
       "! <p class="shorttext synchronized" lang="en">Warning! Can slow down display if there is too many rows/columns (like tens of thousands)</p>
       set_optimize IMPORTING is_optimized TYPE abap_bool DEFAULT abap_true,
+      "! @parameter color | <p class="shorttext synchronized" lang="en">1-blue; 3-yellow; 5-green; 6-red; 7-orange</p>
       set_color IMPORTING column TYPE lvc_fname color TYPE lvc_s_colo.
 
   PROTECTED SECTION.
