@@ -38,7 +38,10 @@ CLASS zcl_ea_alv_table DEFINITION PUBLIC CREATE PUBLIC.
       "! <br/>Frees control from <em>cl_gui_alv_grid</em> so that container can be reused,
       "!  as well as removes default container if was used to display data in in fullscreen.</p>
       close,
-      refresh.
+      refresh,
+      set_dropdown_from_domain IMPORTING column TYPE lvc_fname,
+      "! @parameter dropdown_tab | <p class="shorttext synchronized" lang="en">Skip handle as it is set automatically</p>
+      set_dropdown_from_tab IMPORTING column TYPE lvc_fname dropdown_tab TYPE lvc_t_dral.
 
     DATA:
       alv_grid     TYPE REF TO cl_gui_alv_grid READ-ONLY,
@@ -93,6 +96,10 @@ CLASS zcl_ea_alv_table DEFINITION PUBLIC CREATE PUBLIC.
     DATA:
       was_save_clicked TYPE abap_bool VALUE abap_false,
       in_edit_mode     TYPE abap_bool VALUE abap_false.
+
+    DATA:
+      last_used_dropdown_handle TYPE i VALUE 0,
+      dropdown_tab              TYPE lvc_t_dral.
 ENDCLASS.
 
 
@@ -140,6 +147,10 @@ CLASS zcl_ea_alv_table IMPLEMENTATION.
 
     IF in_edit_mode = abap_true.
       alv_grid->set_ready_for_input( 1 ).
+    ENDIF.
+
+    IF lines( dropdown_tab ) > 0.
+      alv_grid->set_drop_down_table( it_drop_down_alias = dropdown_tab ).
     ENDIF.
 
     alv_grid->set_table_for_first_display( EXPORTING is_variant = VALUE #( BASE grid_variant variant = layout-name )
@@ -308,4 +319,38 @@ CLASS zcl_ea_alv_table IMPLEMENTATION.
       SET PF-STATUS 'ALV_WITH_SAVE' OF PROGRAM zcl_ea_screen=>c_program_name EXCLUDING 'SAVE'.
     ENDIF.
   ENDMETHOD.
+
+  METHOD set_dropdown_from_domain.
+    last_used_dropdown_handle = last_used_dropdown_handle + 1.
+    columns->fc[ KEY name fieldname = column ]-drdn_hndl = last_used_dropdown_handle.
+    columns->fc[ KEY name fieldname = column ]-drdn_alias = 'X'.
+
+    DATA(domain) = columns->fc[ KEY name fieldname = column ]-domname.
+    DATA dd07v_tab TYPE STANDARD TABLE OF dd07v WITH EMPTY KEY.
+    CALL FUNCTION 'DD_DOMVALUES_GET'
+      EXPORTING
+        domname        = domain                  " Domain name
+        text           = abap_true            " Default ' ': without texts, 'X': with, 'T': only text
+      TABLES
+        dd07v_tab      = dd07v_tab
+      EXCEPTIONS
+        wrong_textflag = 1
+        OTHERS         = 2.
+
+    LOOP AT dd07v_tab REFERENCE INTO DATA(dom_val).
+      APPEND VALUE #( handle = last_used_dropdown_handle value = |{ dom_val->domvalue_l } { dom_val->ddtext }|
+        int_value = dom_val->domvalue_l )  TO dropdown_tab.
+    ENDLOOP.
+  ENDMETHOD.
+
+  METHOD set_dropdown_from_tab.
+    last_used_dropdown_handle = last_used_dropdown_handle + 1.
+    columns->fc[ KEY name fieldname = column ]-drdn_hndl = last_used_dropdown_handle.
+    columns->fc[ KEY name fieldname = column ]-drdn_alias = 'X'.
+
+    LOOP AT dropdown_tab REFERENCE INTO DATA(drodown).
+      APPEND VALUE #( BASE drodown->* handle = last_used_dropdown_handle ) TO me->dropdown_tab.
+    ENDLOOP.
+  ENDMETHOD.
+
 ENDCLASS.

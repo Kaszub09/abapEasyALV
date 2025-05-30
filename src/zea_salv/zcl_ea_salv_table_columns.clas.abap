@@ -25,12 +25,16 @@ CLASS zcl_ea_salv_table_columns DEFINITION PUBLIC CREATE PRIVATE GLOBAL FRIENDS 
       set_as_key IMPORTING column TYPE lvc_fname is_key TYPE abap_bool DEFAULT abap_true,
       set_edit_mask IMPORTING column TYPE lvc_fname mask TYPE lvc_edtmsk OPTIONAL,
       set_output_length IMPORTING column TYPE lvc_fname output_length TYPE lvc_outlen,
-      "! <p class="shorttext synchronized" lang="en">Rearranges columns and recalculates col_pos</p>
-      move_column IMPORTING column_to_move TYPE lvc_fname before TYPE lvc_fname,
+      "! <p class="shorttext synchronized" lang="en">Rearranges columns and recalculates col_pos.
+      "! Column is moved before if parameter is filled, after otherwise.</p>
+      move_column IMPORTING column_to_move TYPE lvc_fname before TYPE lvc_fname OPTIONAL after TYPE lvc_fname OPTIONAL,
       "! <p class="shorttext synchronized" lang="en">Warning! Can slow down display if there is too many rows/columns (like tens of thousands)</p>
       set_optimize IMPORTING is_optimized TYPE abap_bool DEFAULT abap_true,
       "! @parameter color | <p class="shorttext synchronized" lang="en">1-blue; 3-yellow; 5-green; 6-red; 7-orange</p>
-      set_color IMPORTING column TYPE lvc_fname color TYPE lvc_s_colo.
+      set_color IMPORTING column TYPE lvc_fname color TYPE lvc_s_colo,
+      set_as_currency IMPORTING column TYPE lvc_fname amount_column TYPE lvc_fname,
+      set_as_quantity IMPORTING column TYPE lvc_fname amount_column TYPE lvc_fname,
+      set_as_checkbox IMPORTING column TYPE lvc_fname is_checkbox TYPE abap_bool DEFAULT abap_true.
 
   PROTECTED SECTION.
     DATA:
@@ -47,12 +51,13 @@ CLASS zcl_ea_salv_table_columns IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD move_column.
+    DATA(new_position) = COND i( WHEN before IS NOT INITIAL THEN alv_table->get_columns( )->get_column_position( before )
+                                 ELSE alv_table->get_columns( )->get_column_position( after ) + 1 ).
     "The way it works is that it deletes column_to_set, then inserts it into index.
     "So e.g. if you have 10 columns and try to insert before 9th column:
     "1. If column_to_move is after 9th column, it will work as expected
     "2. If column_to_move is before 9th column, it will be removed and 9th column temporarily becomes 8th, so it's actually inserted after 9th column
     "   - that's why we need to decrement position
-    DATA(new_position) = alv_table->get_columns( )->get_column_position( before ).
     IF new_position > alv_table->get_columns( )->get_column_position( column_to_move ).
       new_position = new_position - 1.
     ENDIF.
@@ -118,4 +123,17 @@ CLASS zcl_ea_salv_table_columns IMPLEMENTATION.
   METHOD set_color.
     get( column )->set_color( color ).
   ENDMETHOD.
+
+  METHOD set_as_currency.
+    alv_table->get_columns( )->get_column( amount_column )->set_currency_column( column ).
+  ENDMETHOD.
+
+  METHOD set_as_quantity.
+    alv_table->get_columns( )->get_column( amount_column )->set_quantity_column( column ).
+  ENDMETHOD.
+
+  METHOD set_as_checkbox.
+    get( column )->set_cell_type( value = COND #( WHEN is_checkbox = abap_true THEN if_salv_c_cell_type=>checkbox ELSE if_salv_c_cell_type=>text ) ).
+  ENDMETHOD.
+
 ENDCLASS.

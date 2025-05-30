@@ -20,7 +20,7 @@
     <SEOCOMPOTX>
      <CMPNAME>MOVE_COLUMN</CMPNAME>
      <LANGU>E</LANGU>
-     <DESCRIPT>Rearranges columns and recalculates col_pos</DESCRIPT>
+     <DESCRIPT>Rearranges columns and recalculates col_pos. Column is moved</DESCRIPT>
     </SEOCOMPOTX>
     <SEOCOMPOTX>
      <CMPNAME>SET_AS_CELL_STYLE</CMPNAME>
