@@ -28,6 +28,7 @@ CLASS zcl_ea_alv_table DEFINITION PUBLIC CREATE PUBLIC.
       "! @parameter was_save_clicked | <p class="shorttext synchronized" lang="en">Valid only in fullscreen.
       "!    Any data edited by user will stay that way regardless of what was clicked, so create table copy if needed.</p>
       display_data IMPORTING in_edit_mode            TYPE abap_bool DEFAULT abap_false
+                             it_toolbar_excluding TYPE ui_functions OPTIONAL
                    RETURNING VALUE(was_save_clicked) TYPE abap_bool,
       get_layout_from_f4_selection RETURNING VALUE(layout) TYPE slis_vari,
       set_progress_bar IMPORTING text TYPE csequence DEFAULT '' current_record TYPE i DEFAULT 0 records_count TYPE i DEFAULT 0 only_full_percent TYPE abap_bool DEFAULT abap_true,
@@ -155,6 +156,7 @@ CLASS zcl_ea_alv_table IMPLEMENTATION.
 
     alv_grid->set_table_for_first_display( EXPORTING is_variant = VALUE #( BASE grid_variant variant = layout-name )
         i_save = layout-can_save i_default = layout-can_save_initial is_layout = grid_layout
+        it_toolbar_excluding = it_toolbar_excluding
                                            CHANGING it_outtab = <table> it_fieldcatalog = fc ).
 
     IF is_in_default_container = abap_true.
