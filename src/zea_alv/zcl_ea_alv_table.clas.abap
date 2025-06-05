@@ -105,7 +105,7 @@ ENDCLASS.
 
 
 
-CLASS zcl_ea_alv_table IMPLEMENTATION.
+CLASS ZCL_EA_ALV_TABLE IMPLEMENTATION.
 
 
   METHOD alv_initialised.
@@ -268,6 +268,42 @@ CLASS zcl_ea_alv_table IMPLEMENTATION.
     ENDIF.
 
     columns = NEW #( data_table = data_table_ref grid_layout = REF #( grid_layout ) ).
+    CLEAR: last_used_dropdown_handle, dropdown_tab.
+  ENDMETHOD.
+
+
+  METHOD set_dropdown_from_domain.
+    last_used_dropdown_handle = last_used_dropdown_handle + 1.
+    columns->fc[ KEY name fieldname = column ]-drdn_hndl = last_used_dropdown_handle.
+    columns->fc[ KEY name fieldname = column ]-drdn_alias = 'X'.
+
+    DATA(domain) = columns->fc[ KEY name fieldname = column ]-domname.
+    DATA dd07v_tab TYPE STANDARD TABLE OF dd07v WITH EMPTY KEY.
+    CALL FUNCTION 'DD_DOMVALUES_GET'
+      EXPORTING
+        domname        = domain                  " Domain name
+        text           = abap_true            " Default ' ': without texts, 'X': with, 'T': only text
+      TABLES
+        dd07v_tab      = dd07v_tab
+      EXCEPTIONS
+        wrong_textflag = 1
+        OTHERS         = 2.
+
+    LOOP AT dd07v_tab REFERENCE INTO DATA(dom_val).
+      APPEND VALUE #( handle = last_used_dropdown_handle value = |{ dom_val->domvalue_l } { dom_val->ddtext }|
+        int_value = dom_val->domvalue_l )  TO dropdown_tab.
+    ENDLOOP.
+  ENDMETHOD.
+
+
+  METHOD set_dropdown_from_tab.
+    last_used_dropdown_handle = last_used_dropdown_handle + 1.
+    columns->fc[ KEY name fieldname = column ]-drdn_hndl = last_used_dropdown_handle.
+    columns->fc[ KEY name fieldname = column ]-drdn_alias = 'X'.
+
+    LOOP AT dropdown_tab REFERENCE INTO DATA(drodown).
+      APPEND VALUE #( BASE drodown->* handle = last_used_dropdown_handle ) TO me->dropdown_tab.
+    ENDLOOP.
   ENDMETHOD.
 
 
@@ -321,38 +357,4 @@ CLASS zcl_ea_alv_table IMPLEMENTATION.
       SET PF-STATUS 'ALV_WITH_SAVE' OF PROGRAM zcl_ea_screen=>c_program_name EXCLUDING 'SAVE'.
     ENDIF.
   ENDMETHOD.
-
-  METHOD set_dropdown_from_domain.
-    last_used_dropdown_handle = last_used_dropdown_handle + 1.
-    columns->fc[ KEY name fieldname = column ]-drdn_hndl = last_used_dropdown_handle.
-    columns->fc[ KEY name fieldname = column ]-drdn_alias = 'X'.
-
-    DATA(domain) = columns->fc[ KEY name fieldname = column ]-domname.
-    DATA dd07v_tab TYPE STANDARD TABLE OF dd07v WITH EMPTY KEY.
-    CALL FUNCTION 'DD_DOMVALUES_GET'
-      EXPORTING
-        domname        = domain                  " Domain name
-        text           = abap_true            " Default ' ': without texts, 'X': with, 'T': only text
-      TABLES
-        dd07v_tab      = dd07v_tab
-      EXCEPTIONS
-        wrong_textflag = 1
-        OTHERS         = 2.
-
-    LOOP AT dd07v_tab REFERENCE INTO DATA(dom_val).
-      APPEND VALUE #( handle = last_used_dropdown_handle value = |{ dom_val->domvalue_l } { dom_val->ddtext }|
-        int_value = dom_val->domvalue_l )  TO dropdown_tab.
-    ENDLOOP.
-  ENDMETHOD.
-
-  METHOD set_dropdown_from_tab.
-    last_used_dropdown_handle = last_used_dropdown_handle + 1.
-    columns->fc[ KEY name fieldname = column ]-drdn_hndl = last_used_dropdown_handle.
-    columns->fc[ KEY name fieldname = column ]-drdn_alias = 'X'.
-
-    LOOP AT dropdown_tab REFERENCE INTO DATA(drodown).
-      APPEND VALUE #( BASE drodown->* handle = last_used_dropdown_handle ) TO me->dropdown_tab.
-    ENDLOOP.
-  ENDMETHOD.
-
 ENDCLASS.
