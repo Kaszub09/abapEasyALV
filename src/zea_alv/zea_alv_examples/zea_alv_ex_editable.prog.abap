@@ -15,5 +15,5 @@ alv->columns->set_as_editable( 'CARRID_COPY' ).
 "So column CARRID_COPY is marked as field SFLIGHT-CARRID, which is checked against SCARR.
 "Useful if you need to edit but values aren't checked.
 alv->columns->set_ddic_field( column = 'CARRID_COPY' table = 'SFLIGHT' field = 'CARRID' ).
-DATA(edit_result) = alv->display_data( abap_true ).
+DATA(edit_result) = alv->display_data( in_edit_mode = abap_true ).
 WRITE: |Edit result:"{ edit_result }"|.
