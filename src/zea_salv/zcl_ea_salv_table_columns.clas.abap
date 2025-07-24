@@ -10,31 +10,31 @@ CLASS zcl_ea_salv_table_columns DEFINITION PUBLIC CREATE PRIVATE GLOBAL FRIENDS 
 
     METHODS:
       constructor IMPORTING alv_table TYPE REF TO cl_salv_table,
-      get IMPORTING column TYPE lvc_fname RETURNING VALUE(column_obj) TYPE REF TO cl_salv_column_table,
-      set_fixed_text IMPORTING column TYPE lvc_fname text TYPE csequence,
-      set_decimals IMPORTING column TYPE lvc_fname value TYPE lvc_decmls,
-      set_ddic_field IMPORTING column TYPE lvc_fname table TYPE lvc_tname field TYPE lvc_fname,
-      set_as_hidden IMPORTING column TYPE lvc_fname is_hidden TYPE abap_bool DEFAULT abap_true,
-      set_as_color IMPORTING column TYPE lvc_fname,
+      get IMPORTING column TYPE lvc_fname RETURNING VALUE(column_obj) TYPE REF TO cl_salv_column_table RAISING cx_salv_not_found,
+      set_fixed_text IMPORTING column TYPE lvc_fname text TYPE csequence RAISING cx_salv_not_found,
+      set_decimals IMPORTING column TYPE lvc_fname value TYPE lvc_decmls RAISING cx_salv_not_found,
+      set_ddic_field IMPORTING column TYPE lvc_fname table TYPE lvc_tname field TYPE lvc_fname RAISING cx_salv_not_found,
+      set_as_hidden IMPORTING column TYPE lvc_fname is_hidden TYPE abap_bool DEFAULT abap_true RAISING cx_salv_not_found,
+      set_as_color IMPORTING column TYPE lvc_fname RAISING cx_salv_data_error ,
       "! <p class="shorttext synchronized" lang="en">Check documentation for <em>cl_salv_columns_list=>set_exception_column</em>. Column will be displayed first</p>
-      set_as_exception IMPORTING column TYPE lvc_exfnm group TYPE c DEFAULT '2',
+      set_as_exception IMPORTING column TYPE lvc_exfnm group TYPE c DEFAULT '2' RAISING cx_salv_data_error ,
       "! <p class="shorttext synchronized" lang="en">Get types from <em>if_salv_c_celltype</em>.</p>
-      set_as_cell_type IMPORTING column TYPE lvc_fname,
-      set_as_hotspot IMPORTING column TYPE lvc_fname is_hotspot TYPE abap_bool DEFAULT abap_true,
-      set_as_icon IMPORTING column TYPE lvc_fname is_icon TYPE abap_bool DEFAULT abap_true,
-      set_as_key IMPORTING column TYPE lvc_fname is_key TYPE abap_bool DEFAULT abap_true,
-      set_edit_mask IMPORTING column TYPE lvc_fname mask TYPE lvc_edtmsk OPTIONAL,
-      set_output_length IMPORTING column TYPE lvc_fname output_length TYPE lvc_outlen,
+      set_as_cell_type IMPORTING column TYPE lvc_fname RAISING cx_salv_data_error ,
+      set_as_hotspot IMPORTING column TYPE lvc_fname is_hotspot TYPE abap_bool DEFAULT abap_true RAISING cx_salv_not_found,
+      set_as_icon IMPORTING column TYPE lvc_fname is_icon TYPE abap_bool DEFAULT abap_true RAISING cx_salv_not_found,
+      set_as_key IMPORTING column TYPE lvc_fname is_key TYPE abap_bool DEFAULT abap_true RAISING cx_salv_not_found,
+      set_edit_mask IMPORTING column TYPE lvc_fname mask TYPE lvc_edtmsk OPTIONAL RAISING cx_salv_not_found,
+      set_output_length IMPORTING column TYPE lvc_fname output_length TYPE lvc_outlen RAISING cx_salv_not_found,
       "! <p class="shorttext synchronized" lang="en">Rearranges columns and recalculates col_pos.
       "! Column is moved before if parameter is filled, after otherwise.</p>
-      move_column IMPORTING column_to_move TYPE lvc_fname before TYPE lvc_fname OPTIONAL after TYPE lvc_fname OPTIONAL,
+      move_column IMPORTING column_to_move TYPE lvc_fname before TYPE lvc_fname OPTIONAL after TYPE lvc_fname OPTIONAL RAISING cx_salv_not_found,
       "! <p class="shorttext synchronized" lang="en">Warning! Can slow down display if there is too many rows/columns (like tens of thousands)</p>
-      set_optimize IMPORTING is_optimized TYPE abap_bool DEFAULT abap_true,
+      set_optimize IMPORTING is_optimized TYPE abap_bool DEFAULT abap_true RAISING cx_salv_not_found,
       "! @parameter color | <p class="shorttext synchronized" lang="en">1-blue; 3-yellow; 5-green; 6-red; 7-orange</p>
-      set_color IMPORTING column TYPE lvc_fname color TYPE lvc_s_colo,
-      set_as_currency IMPORTING column TYPE lvc_fname amount_column TYPE lvc_fname,
-      set_as_quantity IMPORTING column TYPE lvc_fname amount_column TYPE lvc_fname,
-      set_as_checkbox IMPORTING column TYPE lvc_fname is_checkbox TYPE abap_bool DEFAULT abap_true.
+      set_color IMPORTING column TYPE lvc_fname color TYPE lvc_s_colo RAISING cx_salv_not_found,
+      set_as_currency IMPORTING column TYPE lvc_fname amount_column TYPE lvc_fname RAISING cx_salv_not_found cx_salv_data_error,
+      set_as_quantity IMPORTING column TYPE lvc_fname amount_column TYPE lvc_fname RAISING cx_salv_not_found cx_salv_data_error,
+      set_as_checkbox IMPORTING column TYPE lvc_fname is_checkbox TYPE abap_bool DEFAULT abap_true RAISING cx_salv_not_found.
 
   PROTECTED SECTION.
     DATA:
