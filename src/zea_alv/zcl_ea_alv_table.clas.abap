@@ -14,12 +14,14 @@ CLASS zcl_ea_alv_table DEFINITION PUBLIC CREATE PUBLIC.
       "! <p class="shorttext synchronized" lang="en"><strong>Warning!</strong>
       "! <br/>Should probably be called inside PBO - unless it's a container that can be created somewhere else,
       "! e.g. cl_gui_docking_container with report name and dynpro.
-      set_container IMPORTING container TYPE REF TO cl_gui_container,
+      set_container IMPORTING container TYPE REF TO cl_gui_container
+                    RETURNING VALUE(self) TYPE REF TO zcl_ea_alv_table,
       "! <p class="shorttext synchronized" lang="en">Set before changing any columns, since they are based on table.</p>
       "! @parameter create_table_copy | <p class="shorttext synchronized" lang="en">Set to true if table data is destroyed before display
       "!    (e.g. was declared inside method as local variable, and this method ends before calling display data )</p>
       "! @parameter data_table | <p class="shorttext synchronized" lang="en">Should be ref to standard table</p>
-      set_data IMPORTING create_table_copy TYPE abap_bool DEFAULT abap_false data_table TYPE REF TO data,
+      set_data IMPORTING create_table_copy TYPE abap_bool DEFAULT abap_false data_table TYPE REF TO data
+               RETURNING VALUE(self) TYPE REF TO zcl_ea_alv_table,
       "! <p class="shorttext synchronized" lang="en"><strong>Warning!</strong>
       "! <br/>Use <em>set_data</em> before displaying. Displays in fullscreen if no container was set.
       "! <br/>If you used default container to display in fullscreen,
@@ -34,15 +36,18 @@ CLASS zcl_ea_alv_table DEFINITION PUBLIC CREATE PUBLIC.
       set_progress_bar IMPORTING text TYPE csequence DEFAULT '' current_record TYPE i DEFAULT 0 records_count TYPE i DEFAULT 0 only_full_percent TYPE abap_bool DEFAULT abap_true,
       "! @parameter header | <p class="shorttext synchronized" lang="en">Max 70 characters</p>
       "! @parameter header_size | <p class="shorttext synchronized" lang="en">' ' - large; 'M' - medium; 'X' - small;</p>
-      set_header IMPORTING header TYPE csequence header_size TYPE lvc_titsz DEFAULT 'M',
+      set_header IMPORTING header TYPE csequence header_size TYPE lvc_titsz DEFAULT 'M'
+                 RETURNING VALUE(self) TYPE REF TO zcl_ea_alv_table,
       "! <p class="shorttext synchronized" lang="en">Must be called after displaying data in fullscreen.
       "! <br/>Frees control from <em>cl_gui_alv_grid</em> so that container can be reused,
       "!  as well as removes default container if was used to display data in in fullscreen.</p>
       close,
-      refresh,
-      set_dropdown_from_domain IMPORTING column TYPE lvc_fname,
+      refresh RETURNING VALUE(self) TYPE REF TO zcl_ea_alv_table,
+      set_dropdown_from_domain IMPORTING column TYPE lvc_fname
+                               RETURNING VALUE(self) TYPE REF TO zcl_ea_alv_table,
       "! @parameter dropdown_tab | <p class="shorttext synchronized" lang="en">Skip handle as it is set automatically</p>
-      set_dropdown_from_tab IMPORTING column TYPE lvc_fname dropdown_tab TYPE lvc_t_dral.
+      set_dropdown_from_tab IMPORTING column TYPE lvc_fname dropdown_tab TYPE lvc_t_dral
+                            RETURNING VALUE(self) TYPE REF TO zcl_ea_alv_table.
 
     DATA:
       alv_grid     TYPE REF TO cl_gui_alv_grid READ-ONLY,
@@ -103,20 +108,14 @@ CLASS zcl_ea_alv_table DEFINITION PUBLIC CREATE PUBLIC.
       dropdown_tab              TYPE lvc_t_dral.
 ENDCLASS.
 
-
-
-CLASS ZCL_EA_ALV_TABLE IMPLEMENTATION.
-
-
+CLASS zcl_ea_alv_table IMPLEMENTATION.
   METHOD alv_initialised.
   ENDMETHOD.
-
 
   METHOD close.
     alv_grid->free( ).
     destroy_default_container( ).
   ENDMETHOD.
-
 
   METHOD constructor.
     grid_variant = VALUE #( report = report_id username = sy-uname ).
@@ -129,14 +128,12 @@ CLASS ZCL_EA_ALV_TABLE IMPLEMENTATION.
     initialise_alv( container ).
   ENDMETHOD.
 
-
   METHOD destroy_default_container.
     IF default_container IS BOUND.
       default_container->free( ).
       CLEAR default_container.
     ENDIF.
   ENDMETHOD.
-
 
   METHOD display_data.
     me->was_save_clicked = abap_false.
@@ -168,11 +165,9 @@ CLASS ZCL_EA_ALV_TABLE IMPLEMENTATION.
     ENDIF.
   ENDMETHOD.
 
-
   METHOD get_layout_from_f4_selection.
     layout = cl_salv_layout_service=>f4_layouts( s_key = CORRESPONDING #( grid_variant ) restrict = if_salv_c_layout=>restrict_none )-layout.
   ENDMETHOD.
-
 
   METHOD initialise_alv.
     destroy_default_container( ).
@@ -201,38 +196,29 @@ CLASS ZCL_EA_ALV_TABLE IMPLEMENTATION.
     alv_initialised( ).
   ENDMETHOD.
 
-
   METHOD on_added_function.
   ENDMETHOD.
-
 
   METHOD on_button_click.
   ENDMETHOD.
 
-
   METHOD on_data_changed.
   ENDMETHOD.
-
 
   METHOD on_double_click.
   ENDMETHOD.
 
-
   METHOD on_drag.
   ENDMETHOD.
-
 
   METHOD on_drop.
   ENDMETHOD.
 
-
   METHOD on_drop_complete.
   ENDMETHOD.
 
-
   METHOD on_hotspot_click.
   ENDMETHOD.
-
 
   METHOD recreate_default_container.
     destroy_default_container( ).
@@ -241,20 +227,19 @@ CLASS ZCL_EA_ALV_TABLE IMPLEMENTATION.
     default_container->set_extension( 9999 ).
   ENDMETHOD.
 
-
   METHOD refresh.
+    self = me.
     alv_grid->refresh_table_display( ).
   ENDMETHOD.
 
-
   METHOD set_container.
+    self = me.
     initialise_alv( container ).
   ENDMETHOD.
 
-
   METHOD set_data.
+    self = me.
     FIELD-SYMBOLS <data_table> TYPE STANDARD TABLE.
-
     ASSIGN data_table->* TO <data_table>.
 
     IF create_table_copy = abap_true.
@@ -271,8 +256,8 @@ CLASS ZCL_EA_ALV_TABLE IMPLEMENTATION.
     CLEAR: last_used_dropdown_handle, dropdown_tab.
   ENDMETHOD.
 
-
   METHOD set_dropdown_from_domain.
+    self = me.
     last_used_dropdown_handle = last_used_dropdown_handle + 1.
     columns->fc[ KEY name fieldname = column ]-drdn_hndl = last_used_dropdown_handle.
     columns->fc[ KEY name fieldname = column ]-drdn_alias = 'X'.
@@ -291,12 +276,12 @@ CLASS ZCL_EA_ALV_TABLE IMPLEMENTATION.
 
     LOOP AT dd07v_tab REFERENCE INTO DATA(dom_val).
       APPEND VALUE #( handle = last_used_dropdown_handle value = |{ dom_val->domvalue_l } { dom_val->ddtext }|
-        int_value = dom_val->domvalue_l )  TO dropdown_tab.
+        int_value = dom_val->domvalue_l ) TO dropdown_tab.
     ENDLOOP.
   ENDMETHOD.
 
-
   METHOD set_dropdown_from_tab.
+    self = me.
     last_used_dropdown_handle = last_used_dropdown_handle + 1.
     columns->fc[ KEY name fieldname = column ]-drdn_hndl = last_used_dropdown_handle.
     columns->fc[ KEY name fieldname = column ]-drdn_alias = 'X'.
@@ -306,17 +291,15 @@ CLASS ZCL_EA_ALV_TABLE IMPLEMENTATION.
     ENDLOOP.
   ENDMETHOD.
 
-
   METHOD set_handlers.
     SET HANDLER on_added_function on_double_click on_hotspot_click on_button_click on_data_changed on_drag on_drop on_drop_complete FOR alv_grid.
   ENDMETHOD.
 
-
   METHOD set_header.
+    self = me.
     grid_layout-grid_title = CONV #( header ).
     grid_layout-smalltitle = header_size.
   ENDMETHOD.
-
 
   METHOD set_progress_bar.
     IF NOT text IS INITIAL.
@@ -337,7 +320,6 @@ CLASS ZCL_EA_ALV_TABLE IMPLEMENTATION.
     cl_progress_indicator=>progress_indicate( i_text = last_progress_bar_text i_processed = current_record i_total = records_count i_output_immediately = 'X' ).
   ENDMETHOD.
 
-
   METHOD zif_ea_screen_handler~pai.
     CASE command.
       WHEN 'SAVE'.
@@ -348,7 +330,6 @@ CLASS ZCL_EA_ALV_TABLE IMPLEMENTATION.
         LEAVE TO SCREEN 0.
     ENDCASE.
   ENDMETHOD.
-
 
   METHOD zif_ea_screen_handler~pbo.
     IF in_edit_mode = abap_true.

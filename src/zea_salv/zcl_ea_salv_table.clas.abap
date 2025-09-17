@@ -14,24 +14,30 @@ CLASS zcl_ea_salv_table DEFINITION PUBLIC CREATE PUBLIC.
       "! <br/>Should probably be called inside PBO - unless it's a container that can be created somewhere else,
       "! e.g. cl_gui_docking_container with report name and dynpro.
       "! <br/>It recreates alv_table object, so stuff like data_table, column names, functions etc. must be set again</p>
-      set_container IMPORTING container TYPE REF TO cl_gui_container,
+      set_container IMPORTING container TYPE REF TO cl_gui_container
+                    RETURNING VALUE(self) TYPE REF TO zcl_ea_salv_table,
       "! <p class="shorttext synchronized" lang="en">Set before changing any columns, since they are based on table.</p>
       "! @parameter create_table_copy | <p class="shorttext synchronized" lang="en">Set to true if table data is destroyed before display
       "!    (e.g. was declared inside method as local variable, and this method ends before calling display data )</p>
       "! @parameter data_table | <p class="shorttext synchronized" lang="en">Should be ref to standard table</p>
-      set_data IMPORTING create_table_copy TYPE abap_bool DEFAULT abap_false data_table TYPE REF TO data RAISING cx_salv_no_new_data_allowed,
+      set_data IMPORTING create_table_copy TYPE abap_bool DEFAULT abap_false data_table TYPE REF TO data
+               RETURNING VALUE(self) TYPE REF TO zcl_ea_salv_table
+               RAISING cx_salv_no_new_data_allowed,
       "! <p class="shorttext synchronized" lang="en">Set data before displaying with <em>set_data</em>.</p>
       display_data IMPORTING layout_name TYPE slis_vari OPTIONAL,
       get_layout_from_f4_selection RETURNING VALUE(layout) TYPE slis_vari,
       set_progress_bar IMPORTING text TYPE csequence DEFAULT '' current_record TYPE i DEFAULT 0 records_count TYPE i DEFAULT 0 only_full_percent TYPE abap_bool DEFAULT abap_true,
       "! @parameter header | <p class="shorttext synchronized" lang="en">Max 70 characters</p>
-      set_header IMPORTING header TYPE csequence header_size TYPE salv_de_header_size DEFAULT cl_salv_display_settings=>c_header_size_large,
+      set_header IMPORTING header TYPE csequence header_size TYPE salv_de_header_size DEFAULT cl_salv_display_settings=>c_header_size_large
+                 RETURNING VALUE(self) TYPE REF TO zcl_ea_salv_table,
       "! Display screen as popup. Can't be used when displaying in container.
       "! Set start_colum or start_line to 0 to reset to default fullscreen display.
       set_screen_popup IMPORTING start_column TYPE i DEFAULT 1 end_column TYPE i DEFAULT 192
-                                 start_line TYPE i DEFAULT 1 end_line TYPE i DEFAULT 32,
+                                 start_line TYPE i DEFAULT 1 end_line TYPE i DEFAULT 32
+                       RETURNING VALUE(self) TYPE REF TO zcl_ea_salv_table,
       enable_layout_saving IMPORTING restriction TYPE salv_de_layout_restriction DEFAULT if_salv_c_layout=>restrict_none
-                                     can_save_as_default TYPE abap_bool DEFAULT abap_true.
+                                     can_save_as_default TYPE abap_bool DEFAULT abap_true
+                           RETURNING VALUE(self) TYPE REF TO zcl_ea_salv_table.
 
     DATA:
       alv_table TYPE REF TO cl_salv_table READ-ONLY,
@@ -75,6 +81,8 @@ CLASS zcl_ea_salv_table IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD enable_layout_saving.
+    self = me.
+
     alv_table->get_layout( )->set_key( layout_key ).
     alv_table->get_layout( )->set_save_restriction( restriction ).
     alv_table->get_layout( )->set_default( can_save_as_default ).
@@ -121,8 +129,9 @@ CLASS zcl_ea_salv_table IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD set_data.
-    FIELD-SYMBOLS <data_table> TYPE STANDARD TABLE.
+    self = me.
 
+    FIELD-SYMBOLS <data_table> TYPE STANDARD TABLE.
     ASSIGN data_table->* TO <data_table>.
 
     IF create_table_copy = abap_true.
@@ -163,11 +172,14 @@ CLASS zcl_ea_salv_table IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD set_header.
-    me->alv_table->get_display_settings( )->set_list_header( CONV #( header ) ). "TODO check if no overflow
+    self = me.
+
+    me->alv_table->get_display_settings( )->set_list_header( CONV #( header ) ).
     me->alv_table->get_display_settings( )->set_list_header_size( header_size ).
   ENDMETHOD.
 
   METHOD set_container.
+    self = me.
     initialise_alv( container ).
   ENDMETHOD.
 
@@ -175,6 +187,8 @@ CLASS zcl_ea_salv_table IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD set_screen_popup.
+    self = me.
+
     alv_table->set_screen_popup( start_column = start_column end_column = end_column start_line = start_line end_line = end_line ).
   ENDMETHOD.
 ENDCLASS.

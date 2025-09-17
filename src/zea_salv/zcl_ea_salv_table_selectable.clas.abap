@@ -1,6 +1,6 @@
-"! <p class="shorttext synchronized" lang="en">Allows user to select row from table.</p>
+"! <p class="shorttext synchronized">Allows user to select row from table.</p>
 "! <br/>TAGS: ALV; SALV; table; display; popup; selectable;
-CLASS zcl_ea_salv_table_selectable DEFINITION PUBLIC CREATE PUBLIC INHERITING FROM zcl_ea_salv_table.
+CLASS zcl_ea_salv_table_selectable DEFINITION PUBLIC INHERITING FROM zcl_ea_salv_table CREATE PUBLIC.
 
   PUBLIC SECTION.
     CONSTANTS:
@@ -22,10 +22,10 @@ CLASS zcl_ea_salv_table_selectable DEFINITION PUBLIC CREATE PUBLIC INHERITING FR
       "!    (also true selected by double clicking if appllicable).</p>
       display_selectable IMPORTING layout TYPE slis_vari OPTIONAL double_click_select TYPE abap_bool DEFAULT abap_true
                          EXPORTING selected_rows TYPE salv_t_row user_confirmed TYPE abap_bool,
-      set_selection_mode IMPORTING mode TYPE i DEFAULT if_salv_c_selection_mode=>single.
+      set_selection_mode IMPORTING mode TYPE i DEFAULT if_salv_c_selection_mode=>single
+                         RETURNING VALUE(self) TYPE REF TO zcl_ea_salv_table_selectable.
 
   PROTECTED SECTION.
-
     DATA:
       user_confirmed      TYPE abap_bool,
       double_click_select TYPE abap_bool.
@@ -79,6 +79,7 @@ CLASS zcl_ea_salv_table_selectable IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD set_selection_mode.
+    self = me.
     alv_table->get_selections( )->set_selection_mode( mode ).
   ENDMETHOD.
 
