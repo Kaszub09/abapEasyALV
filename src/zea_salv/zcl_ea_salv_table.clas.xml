@@ -33,6 +33,11 @@
      <DESCRIPT>&lt;strong&gt;Warning!&lt;/strong&gt; &lt;br/&gt;Can be used only with default</DESCRIPT>
     </SEOCOMPOTX>
     <SEOCOMPOTX>
+     <CMPNAME>INIT_USER_VARIANT</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Use in INITIALIZATION event of a report. Tries to load varia</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
      <CMPNAME>SET_CONTAINER</CMPNAME>
      <LANGU>E</LANGU>
      <DESCRIPT>&lt;strong&gt;Warning!&lt;/strong&gt; &lt;br/&gt;Should probably be called ins</DESCRIPT>

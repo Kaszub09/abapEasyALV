@@ -6,6 +6,11 @@ CLASS zcl_ea_alv_table DEFINITION PUBLIC CREATE PUBLIC.
     INTERFACES:
       zif_ea_screen_handler.
 
+    CLASS-METHODS:
+      "! <p class="shorttext synchronized" lang="en">Use in INITIALIZATION event of a report.
+      "! Tries to load variant with the same name as user.</p>
+      init_user_variant IMPORTING repid TYPE raldb_repo DEFAULT sy-cprog user TYPE sy-uname DEFAULT sy-uname.
+
     METHODS:
       "! @parameter layout_key |  <p class="shorttext synchronized" lang="en">Created from <em>report_id</em> if skipped.</p>
       "! @parameter report_id | <p class="shorttext synchronized" lang="en">Used to if <em>layout_key</em> wasn't filled.</p>
@@ -337,5 +342,14 @@ CLASS zcl_ea_alv_table IMPLEMENTATION.
     ELSE.
       SET PF-STATUS 'ALV_WITH_SAVE' OF PROGRAM zcl_ea_screen=>c_program_name EXCLUDING 'SAVE'.
     ENDIF.
+  ENDMETHOD.
+
+  METHOD init_user_variant.
+    CALL FUNCTION 'RS_SUPPORT_SELECTIONS'
+      EXPORTING
+        report  = repid
+        variant = CONV raldb_vari( user )
+      EXCEPTIONS
+        OTHERS  = 1.
   ENDMETHOD.
 ENDCLASS.

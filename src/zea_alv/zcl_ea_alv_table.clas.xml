@@ -43,6 +43,11 @@
      <DESCRIPT>Use to add functions to toolbar. Redefine &lt;em&gt;on_added_funct</DESCRIPT>
     </SEOCOMPOTX>
     <SEOCOMPOTX>
+     <CMPNAME>INIT_USER_VARIANT</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Use in INITIALIZATION event of a report. Tries to load varia</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
      <CMPNAME>LAYOUT</CMPNAME>
      <LANGU>E</LANGU>
      <DESCRIPT>Info about layout (columns position, whether can be save etc</DESCRIPT>
